@@ -42,6 +42,7 @@ var gfyObject = function (gfyElem, classname) {
     var gif;
     var overlay;
     var titleDiv;
+    var loadingIndicator;
     var isMobile = mobilecheck();
     var isReverse = false;
     var gfyItem;
@@ -146,6 +147,18 @@ var gfyObject = function (gfyElem, classname) {
         }
 
         gfyRootElem.appendChild(overlay);
+    }
+    
+    function createLoadingIndicator() {
+        loadingIndicator = document.createElement("div"),
+        loadingIndicator.className = "loader_indicator",
+        loadingIndicator.style.position = "absolute",
+        loadingIndicator.style.width = "100%",
+        loadingIndicator.style.left = "0",
+        loadingIndicator.style.top = "0",
+        loadingIndicator.style.boxSizing = "border-box",
+        loadingIndicator.style.height = "100%",
+        gfyRootElem.appendChild(loadingIndicator)
     }
 
     function createPlayButton() {
@@ -394,7 +407,10 @@ var gfyObject = function (gfyElem, classname) {
 
           createTitle();
           createOverlay();
-
+          createLoadingIndicator();
+          vid.oncanplay = function() {
+            loadingIndicator.remove()
+          }
           if (opt.optimize) {
             if (vid.poster) {
                 var image = new Image();
